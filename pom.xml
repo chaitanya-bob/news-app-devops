@@ -79,12 +79,12 @@
 <distributionManagement>
     <snapshotRepository>
         <id>jfrog-snapshots</id>
-        <url><https://trialimwo3q.jfrog.io/artifactory/newsapp_snapshots//url>
+        <url><https://trialimwo3q.jfrog.io/artifactory/newsapp_snapshots/url>
     </snapshotRepository>
 
     <repository>
         <id>jfrog-releases</id>
-        <url><https://trialimwo3q.jfrog.io/artifactory/newsapp_release//url>
+        <url><https://trialimwo3q.jfrog.io/artifactory/newsapp_release/url>
     </repository>
 </distributionManagement>
 </project>
