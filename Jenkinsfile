@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'feature-1', url: ''
+                git branch: 'feature-1', url: 'https://github.com/chaitanya-bob/news-app-devops.git'
             }
         }
         stage('Build') {
