@@ -52,38 +52,38 @@ pipeline {
                 ''')
             }
         }
-stage('Push the artifacts into JFrog Artifactory') {
-    steps {
-        script {
-            // Initialize Artifactory server by ID configured in Jenkins → Manage Credentials
-            def server = Artifactory.server('jfrog')
+        stage('Push the artifacts into JFrog Artifactory') {
+            steps {
+                script {
+                    // Get the current date and time in the format: yyyy-MM-dd_HH-mm
+                    def currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd_HH-mm").format(new Date())
 
-            // Create a new build info object
-            def buildInfo = Artifactory.newBuildInfo()
+                    // Define the target path with the timestamp
+                    def targetPath = "newsapp_release/${currentDate}/"
 
-            // Get the current date and time in the format: yyyy-MM-dd_HH-mm
-            def currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd_HH-mm").format(new Date())
+                    // Upload the built WAR to JFrog Artifactory with the timestamped path
+                    rtUpload(
+                        serverId: "jfrog",
+                        spec: """{
+                            "files": [
+                                {
+                                    "pattern": "${WAR_FILE}",
+                                    "target": "${targetPath}"
+                                }
+                            ]
+                        }"""
+                    )
+                }
+            }
+        }
+    } // end stages
 
-            // Define the target path with timestamp
-            def targetPath = "newsapp_release/${currentDate}/"
-
-            // Upload WAR file to the timestamped folder
-            server.upload(
-                spec: """{
-                    "files": [
-                        {
-                            "pattern": "${WAR_FILE}",
-                            "target": "${targetPath}"
-                        }
-                    ]
-                }""",
-                buildInfo: buildInfo
-            )
-
-            // Publish the build info to Artifactory (optional but recommended)
-            server.publishBuildInfo(buildInfo)
+    post {
+        success {
+            echo 'Build and deployment completed successfully!'
+        }
+        failure {
+            echo 'Build or deployment failed. Check logs for details.'
         }
     }
 }
-
-              
