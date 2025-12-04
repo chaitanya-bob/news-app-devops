@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'java' }
+    agent { label 'slave7' }
 
     environment {
         TOMCAT_PATH = "/opt/tomcat10/webapps"
